@@ -41,9 +41,11 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
      * Peticion con liveData
      */
     fun getListDataFromServicesLiveData() : MutableLiveData<Response?>{
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             kotlin.runCatching {
-                Repository.getUserDataFromServices()
+                withContext(Dispatchers.IO){
+                    Repository.getUserDataFromServices()
+                }
             }.onSuccess {
                 responseLiveData.postValue(it)
             }.onFailure {
